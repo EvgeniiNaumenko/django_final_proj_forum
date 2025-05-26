@@ -1,0 +1,42 @@
+{% extends 'forum/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2>{{ post.title }}</h2>
+    <div class="row my-3">
+        <div class="col-md-4">
+            {% if post.image %}
+                <img src="{{ post.image.url }}" class="img-fluid rounded" alt="{{ post.title }}">
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <p>{{ post.description }}</p>
+        </div>
+    </div>
+
+    <hr>
+    <h4>Комментарии</h4>
+
+    {% for comment in comments %}
+        <div class="mb-3 p-3 border rounded">
+            <strong>{{ comment.user.username }}</strong> <small class="text-muted">{{ comment.created_at|date:"d.m.Y H:i" }}</small>
+            <p class="mt-2 mb-0">{{ comment.text }}</p>
+        </div>
+    {% empty %}
+        <p>Комментариев пока нет.</p>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+        <hr>
+        <h5>Добавить комментарий</h5>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </form>
+    {% else %}
+        <p class="text-muted">Чтобы оставить комментарий, <a href="{% url 'login' %}">войдите</a>.</p>
+    {% endif %}
+</div>
+{% endblock %}

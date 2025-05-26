@@ -1,0 +1,66 @@
+{% extends 'forum/base.html' %}
+{% block content %}
+<div class="container mt-4">
+
+  <h2>Профиль пользователя</h2>
+
+  <div class="row align-items-center mt-3">
+
+    <!-- Аватарка слева -->
+    <div class="col-md-3 text-center">
+      {% if request.user.avatar %}
+        <img src="{{ request.user.avatar.url }}" alt="Аватар" class="img-fluid rounded-circle" style="max-width: 150px;">
+      {% else %}
+        <div class="bg-secondary rounded-circle" style="width:150px; height:150px; line-height:150px; color:white; font-size: 4rem;">
+          {{ request.user.username|first|upper }}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Информация справа -->
+    <div class="col-md-6">
+      <ul class="list-group">
+        <li class="list-group-item"><strong>Никнейм:</strong> {{ request.user.username }}</li>
+        <li class="list-group-item"><strong>Имя:</strong> {{ request.user.first_name }}</li>
+        <li class="list-group-item"><strong>Дата рождения:</strong> {{ request.user.birth_date|date:"d.m.Y" }}</li>
+      </ul>
+
+      <a href="{% url 'profile_edit' %}" class="btn btn-warning mt-3">Изменить профиль</a>
+    </div>
+
+  </div>
+
+  <!-- Ниже список категорий пользователя -->
+  <div class="mt-5">
+    <h3>Мои категории</h3>
+    {% if user_categories %}
+      <ul class="list-group">
+        {% for category in user_categories %}
+          <li class="list-group-item">
+            <a href="{% url 'category_detail' category.id %}">{{ category.name }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Категории не созданы.</p>
+    {% endif %}
+  </div>
+
+  <!-- Ниже список тем пользователя -->
+  <div class="mt-5">
+    <h3>Мои темы</h3>
+    {% if user_posts %}
+      <ul class="list-group">
+        {% for post in user_posts %}
+          <li class="list-group-item">
+            <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a> ({{ post.created_at|date:"d.m.Y" }})
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Тем не создано.</p>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

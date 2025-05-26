@@ -1,0 +1,64 @@
+{% extends 'forum/home.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-3">{{ category.name }}</h2>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <img src="{{ category.image.url }}" alt="{{ category.title }}" class="img-fluid">
+        </div>
+        <div class="col-md-8">
+            <p>{{ category.description }}</p>
+        </div>
+    </div>
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'post_add' category.id %}" class="btn btn-success mb-4">Добавить тему</a>
+    {% else %}
+        <a href="{% url 'login' %}?next={% url 'post_add' category.id %}" class="btn btn-success mb-4">Добавить тему</a>
+    {% endif %}
+
+    <hr>
+
+    <h4>Темы:</h4>
+    {% for post in page_obj %}
+        <a href="{% url 'post_detail' post.id %}" class="text-decoration-none text-dark">
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-3">
+                        <img src="{{ post.image.url }}" class="img-fluid" alt="{{ post.title }}">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.title }}</h5>
+                            <p class="card-text">{{ post.description|truncatechars:200 }}</p>
+                            <p class="card-text"><small class="text-muted">Создано: {{ post.created_at }}</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    {% empty %}
+        <p>Тем пока нет.</p>
+    {% endfor %}
+
+    <nav aria-label="Постраничная навигация">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Назад</a>
+                </li>
+            {% endif %}
+
+            <li class="page-item disabled"><span class="page-link">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span></li>
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Вперед</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock %}

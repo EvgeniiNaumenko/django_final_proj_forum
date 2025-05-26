@@ -1,0 +1,12 @@
+{% extends 'forum/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Добавить тему</h2>
+    <form method="post" enctype="multipart/form-data" class="mt-3">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Создать</button>
+    </form>
+</div>
+{% endblock %}
