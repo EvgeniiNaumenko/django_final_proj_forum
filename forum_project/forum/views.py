@@ -16,8 +16,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
 def home(request):
-    categories_list = Category.objects.all().order_by('title')  # или по любому другому полю
-    paginator = Paginator(categories_list, 6)  # показывать по 5 категорий на странице
+    categories_list = Category.objects.all().order_by('title')
+    paginator = Paginator(categories_list, 6)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -29,7 +29,6 @@ def home(request):
 
 @login_required(login_url='login')
 def add_category_redirect(request):
-    # Редирект на форму создания категории, если нужна простая кнопка
     return redirect('category_add')
 
 class CategoryCreateView(LoginRequiredMixin, CreateView):
@@ -46,7 +45,7 @@ def category_detail(request, pk):
     category = get_object_or_404(Category, pk=pk)
     posts = Post.objects.filter(category=category).order_by('-created_at')
     
-    paginator = Paginator(posts, 5)  # 5 постов на страницу
+    paginator = Paginator(posts, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -68,7 +67,7 @@ class PostCreateView(View):
         if form.is_valid():
             post = form.save(commit=False)
             post.category_id = category_id
-            post.user = request.user  # <- вот сюда добавляем
+            post.user = request.user
             post.save()
             return redirect('category_detail', pk=category_id)
         return render(request, 'forum/post_add.html', {'form': form, 'category_id': category_id})
@@ -129,8 +128,8 @@ def login_view(request):
 @login_required
 def profile_view(request):
     user = request.user
-    user_categories = user.categories.all()  # из related_name='categories'
-    user_posts = user.posts.all().order_by('-created_at')  # related_name='posts'
+    user_categories = user.categories.all()
+    user_posts = user.posts.all().order_by('-created_at')
 
     return render(request, 'forum/profile.html', {
         'user_categories': user_categories,
@@ -143,7 +142,7 @@ def profile_edit(request):
         form = ProfileEditForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('profile')  # или куда хочешь перенаправить после сохранения
+            return redirect('profile')
     else:
         form = ProfileEditForm(instance=request.user)
     
