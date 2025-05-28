@@ -1,11 +1,20 @@
 {% extends 'forum/base.html' %}
 {% block content %}
-<div class="container mt-4">
-  <h2>Реєстрація</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-success">Зареєструватися</button>
-  </form>
+<div class="container mt-5" style="max-width: 500px;">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="card-title text-center mb-4">Регистрация</h3>
+
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success w-100">Зарегистрироваться</button>
+            </form>
+
+            <div class="text-center mt-3">
+                <a href="{% url 'home' %}" class="btn btn-link">Вернуться на главную</a>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

@@ -1,18 +1,23 @@
 {% extends 'forum/base.html' %}
 {% block content %}
-<div class="container mt-4">
-    <h2>Вход</h2>
+<div class="container mt-5" style="max-width: 500px;">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="card-title text-center mb-4">Вход</h3>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="hidden" name="next" value="{{ next }}">
-        <button type="submit">Войти</button>
-    </form>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="hidden" name="next" value="{{ next }}">
+                <button type="submit" class="btn btn-primary w-100">Войти</button>
+            </form>
 
-    <form action="{% url 'register' %}" method="get" style="display:inline;">
-    <button type="submit">Зарегистрироваться</button>
-    </form>
-    <a href="{% url 'home' %}">Главная</a>
+            <div class="text-center mt-3">
+                <p>Нет аккаунта?</p>
+                <a href="{% url 'register' %}" class="btn btn-outline-secondary w-100 mb-2">Зарегистрироваться</a>
+                <a href="{% url 'home' %}" class="btn btn-link">Вернуться на главную</a>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

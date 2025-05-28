@@ -11,7 +11,8 @@ urlpatterns = [
     path('post/<int:post_id>/', post_detail, name='post_detail'),
     path('register/', register_view, name='register'),
     path('login/', login_view, name='login'),
-    path('accounts/logout/', LogoutView.as_view(next_page='login'), name='logout'),
+    path('accounts/logout/', LogoutView.as_view(next_page='home'), name='logout'),
     path('profile/', profile_view, name='profile'),
     path('profile/edit/', views.profile_edit, name='profile_edit'),
+    path('toggle_like/<int:post_id>/', views.toggle_like, name='toggle_like'),
 ]

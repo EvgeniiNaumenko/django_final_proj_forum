@@ -33,7 +33,12 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ post.title }}</h5>
                             <p class="card-text">{{ post.description|truncatechars:200 }}</p>
-                            <p class="card-text"><small class="text-muted">Создано: {{ post.created_at }}</small></p>
+                            <p class="card-text">
+                                <small class="text-muted">Создано: {{ post.created_at }}</small>
+                            </p>
+                            <p class="card-text">
+                                ❤️ {{ post.likes.count }} лайков
+                            </p>
                         </div>
                     </div>
                 </div>
